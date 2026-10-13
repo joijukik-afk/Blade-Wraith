@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Legacy Round Launcher Icon (API 24-25)
+      Same as ic_launcher.xml — most launchers apply their own
+      shape mask anyway.
+    ============================================================
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/ic_launcher_background" />
+
+    <item android:drawable="@drawable/ic_launcher_foreground" />
+
+</layer-list>
