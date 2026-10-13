@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Monochrome Icon (Android 13+ / API 33+)
+      Used for "Themed Icons" on Android 13+.
+      The system recolors this to match the user's wallpaper.
+      Only silhouettes matter — colors are ignored.
+    ============================================================
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Blade silhouette -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,22 L60,30 L60,62 L48,62 L48,30 Z" />
+
+    <!-- Guard silhouette -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,62 L70,62 L70,68 L38,68 Z" />
+
+    <!-- Handle silhouette -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M51,68 L57,68 L57,82 L51,82 Z" />
+
+    <!-- Pommel silhouette -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,82 L60,86 L54,90 L48,86 Z" />
+
+</vector>
