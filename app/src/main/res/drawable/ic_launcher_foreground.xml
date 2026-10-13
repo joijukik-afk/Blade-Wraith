@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Launcher Icon Foreground
+      A silver sword with a golden hilt and a subtle blue glow.
+      Fits within the 72x72 dp safe zone of the 108x108 dp canvas.
+
+      Safe zone in viewport units: x,y from 18 to 90.
+      Our sword occupies roughly y=22 to y=88 — centered.
+    ============================================================
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!--
+        ========================================================
+          SWORD GLOW — behind everything
+          Soft blue radial glow around the blade area.
+        ========================================================
+    -->
+    <path android:pathData="M54,54 m-34,0 a34,34 0 1,0 68,0 a34,34 0 1,0 -68,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="54"
+                android:centerY="46"
+                android:gradientRadius="34"
+                android:startColor="#6080D0FF"
+                android:centerColor="#2080D0FF"
+                android:endColor="#0080D0FF" />
+        </aapt:attr>
+    </path>
+
+    <!--
+        ========================================================
+          BLADE — main body (silver gradient from tip to base)
+          Shape: tapered pentagon
+          Tip at (54, 22), widens to (48,30)/(60,30), straight down.
+        ========================================================
+    -->
+    <path android:pathData="M54,22 L60,30 L60,62 L48,62 L48,30 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="48" android:startY="22"
+                android:endX="60" android:endY="62"
+                android:startColor="#FFFFFF"
+                android:centerColor="#C8DCF0"
+                android:endColor="#7888A0" />
+        </aapt:attr>
+    </path>
+
+    <!--
+        Blade center ridge — a bright vertical line for depth.
+    -->
+    <path
+        android:pathData="M53.5,23 L54.5,23 L54.5,62 L53.5,62 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.9" />
+
+    <!--
+        Blade left shadow edge — subtle dark strip on left side.
+    -->
+    <path
+        android:pathData="M48,30 L49.5,32 L49.5,62 L48,62 Z"
+        android:fillColor="#4050A0C0"
+        android:fillAlpha="0.5" />
+
+    <!--
+        Blade right highlight — bright strip on right side.
+    -->
+    <path
+        android:pathData="M58.5,30 L60,30 L60,62 L58.5,62 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.55" />
+
+    <!--
+        ========================================================
+          GUARD — horizontal crossbar (golden)
+        ========================================================
+    -->
+    <path
+        android:pathData="M38,62 L70,62 L70,68 L38,68 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="38" android:startY="62"
+                android:endX="70" android:endY="68"
+                android:startColor="#E8C060"
+                android:centerColor="#C09830"
+                android:endColor="#806018" />
+        </aapt:attr>
+    </path>
+
+    <!-- Guard top highlight -->
+    <path
+        android:pathData="M38,62 L70,62 L70,63.5 L38,63.5 Z"
+        android:fillColor="#FFF0A0"
+        android:fillAlpha="0.9" />
+
+    <!-- Guard bottom shadow -->
+    <path
+        android:pathData="M38,66.5 L70,66.5 L70,68 L38,68 Z"
+        android:fillColor="#604010"
+        android:fillAlpha="0.7" />
+
+    <!--
+        ========================================================
+          HANDLE — leather-wrapped grip (dark brown)
+        ========================================================
+    -->
+    <path
+        android:pathData="M51,68 L57,68 L57,82 L51,82 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="51" android:startY="68"
+                android:endX="57" android:endY="82"
+                android:startColor="#5A3018"
+                android:centerColor="#3A1E0A"
+                android:endColor="#2A1408" />
+        </aapt:attr>
+    </path>
+
+    <!-- Handle wrap lines (3 horizontal bands) -->
+    <path
+        android:pathData="M51,71 L57,71 L57,72.2 L51,72.2 Z"
+        android:fillColor="#7A4828"
+        android:fillAlpha="0.8" />
+
+    <path
+        android:pathData="M51,75 L57,75 L57,76.2 L51,76.2 Z"
+        android:fillColor="#7A4828"
+        android:fillAlpha="0.8" />
+
+    <path
+        android:pathData="M51,79 L57,79 L57,80.2 L51,80.2 Z"
+        android:fillColor="#7A4828"
+        android:fillAlpha="0.8" />
+
+    <!--
+        ========================================================
+          POMMEL — decorative diamond at the bottom (golden)
+        ========================================================
+    -->
+    <path android:pathData="M54,82 L60,86 L54,90 L48,86 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="48" android:startY="82"
+                android:endX="60" android:endY="90"
+                android:startColor="#F0D070"
+                android:centerColor="#C09830"
+                android:endColor="#705010" />
+        </aapt:attr>
+    </path>
+
+    <!-- Pommel top highlight -->
+    <path
+        android:pathData="M54,82 L58,85 L54,86 L50,85 Z"
+        android:fillColor="#FFF0A0"
+        android:fillAlpha="0.85" />
+
+    <!--
+        ========================================================
+          SPARKLE — small decorative dot near the blade tip
+          Adds a "magic weapon" feel.
+        ========================================================
+    -->
+    <path
+        android:pathData="M62,26 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.9" />
+
+    <path
+        android:pathData="M46,30 m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0"
+        android:fillColor="#C0E0FF"
+        android:fillAlpha="0.7" />
+
+</vector>
