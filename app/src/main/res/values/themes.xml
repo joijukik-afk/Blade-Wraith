@@ -1,9 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Application Theme
+      Full-screen, notch-aware theme for OpenGL ES 2.0 rendering.
+      No ActionBar, no StatusBar, no NavigationBar — pure game view.
+    ============================================================
+-->
 <resources>
+
+    <!--
+        ========================================================
+          Base Theme — Theme.BladeWraith
+          Inherits from Material NoActionBar Fullscreen.
+          All window chrome is removed for maximum game area.
+          API Level: 21+ (Material theme requirement)
+        ========================================================
+    -->
     <style name="Theme.BladeWraith" parent="android:Theme.Material.NoActionBar.Fullscreen">
+
+        <!--
+            ----------------------------------------------------
+              Window Configuration
+              Ensures the window occupies the entire screen.
+            ----------------------------------------------------
+        -->
+
+        <!-- Remove the title bar (redundant with Fullscreen parent, kept for clarity) -->
+        <item name="android:windowNoTitle">true</item>
+
+        <!-- Hide the status bar (top notification area) -->
+        <item name="android:windowFullscreen">true</item>
+
+        <!-- Draw the window's background as solid black.
+             Prevents the "white flash" during app startup. -->
         <item name="android:windowBackground">@android:color/black</item>
+
+        <!-- Allow the window to extend behind system bars (immersive mode) -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <!--
+            ----------------------------------------------------
+              Notch / Display Cutout Handling
+              "shortEdges" lets content render into the cutout
+              area on the short edges of the screen (top in
+              portrait, side in landscape).
+              Without this, the game would show a black band
+              around the notch — unacceptable for a full-screen
+              game.
+              Reference: Android Developers — "Display cutouts"
+              Note: Requires API 28+ (Android 9). On older
+              devices, this attribute is ignored gracefully.
+            ----------------------------------------------------
+        -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+
+        <!--
+            ----------------------------------------------------
+              Color / Appearance
+              Dark palette to match the game's atmosphere.
+            ----------------------------------------------------
+        -->
+
+        <!-- Status bar color: black (not visible in fullscreen, but set for safety) -->
+        <item name="android:statusBarColor">@android:color/black</item>
+
+        <!-- Navigation bar color: black -->
+        <item name="android:navigationBarColor">@android:color/black</item>
+
+        <!-- Light navigation bar icons (false = light icons on dark background) -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!--
+            ----------------------------------------------------
+              Animations
+              Disable window animations for instant startup.
+              Critical for games — no transition flicker.
+            ----------------------------------------------------
+        -->
+        <item name="android:windowAnimationStyle">@null</item>
+
+        <!--
+            ----------------------------------------------------
+              Hardware Acceleration
+              Force GPU rendering for the entire window.
+              Essential for OpenGL ES performance.
+            ----------------------------------------------------
+        -->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowIsFloating">false</item>
+
+        <!--
+            ----------------------------------------------------
+              Secure Flag
+              Prevent screenshots and screen recording.
+              (Set to true if you want to block capture.)
+              Currently false — screenshots are allowed.
+            ----------------------------------------------------
+        -->
+        <item name="android:windowSecure">false</item>
+
+        <!--
+            ----------------------------------------------------
+              Overscan
+              Allow the window to extend beyond the visible
+              screen area. Useful for devices with unusual
+              aspect ratios.
+            ----------------------------------------------------
+        -->
+        <item name="android:windowOverscan">true</item>
+
+        <!--
+            ----------------------------------------------------
+              Background Dim
+              Disable background dimming — the game is the
+              only content in the window.
+            ----------------------------------------------------
+        -->
+        <item name="android:backgroundDimEnabled">false</item>
+
+        <!--
+            ----------------------------------------------------
+              Action Bar
+              Explicitly disable the action bar.
+            ----------------------------------------------------
+        -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <!--
+            ----------------------------------------------------
+              Orientation Preference
+              Signals to the system that this theme is
+              landscape-oriented. Actual orientation is set
+              in AndroidManifest.xml.
+            ----------------------------------------------------
+        -->
+        <item name="android:windowIsLandscape">true</item>
+
+    </style>
+
+    <!--
+        ========================================================
+          Splash Theme (Optional — for future use)
+          A minimal theme shown before the OpenGL surface
+          is created. Prevents any visual glitch during
+          app initialization.
+        ========================================================
+    -->
+    <style name="Theme.BladeWraith.Splash" parent="Theme.BladeWraith">
+        <!-- Solid black background during startup -->
+        <item name="android:windowBackground">@android:color/black</item>
+        <!-- No content view — the Activity sets it programmatically -->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
+
 </resources>
