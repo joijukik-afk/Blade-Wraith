@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Data Extraction Rules (Android 12+)
+      Defines which app data is included in or excluded from
+      both cloud backup AND device-to-device (D2D) transfer
+      on Android 12 (API 31) and higher.
+
+      Reference: Android Developers — "Back up user data with
+      Auto Backup"
+      https://developer.android.com/identity/data/autobackup
+
+      File location: app/src/main/res/xml/data_extraction_rules.xml
+      Referenced from: AndroidManifest.xml →
+          android:dataExtractionRules="@xml/data_extraction_rules"
+
+      IMPORTANT: This file is ONLY used on Android 12+.
+      For Android 11 and below, backup_rules.xml is used.
+      BOTH files must be declared in the manifest.
+    ============================================================
+-->
+<data-extraction-rules>
+
+    <!--
+        ========================================================
+          Cloud Backup Rules
+          Applies to Google Drive / cloud backup.
+        ========================================================
+    -->
+    <cloud-backup>
+
+        <!--
+            ----------------------------------------------------
+              Include Rules
+              Explicitly include the data we want backed up.
+            ----------------------------------------------------
+        -->
+
+        <!-- Include all SharedPreferences (settings) -->
+        <include
+            domain="sharedpref"
+            path="." />
+
+        <!-- Include all internal files (save data, progress) -->
+        <include
+            domain="file"
+            path="." />
+
+        <!-- Include all databases (future-proofing) -->
+        <include
+            domain="database"
+            path="." />
+
+        <!--
+            ----------------------------------------------------
+              Exclude Rules
+              Exclude sensitive or device-specific data.
+            ----------------------------------------------------
+        -->
+
+        <!-- Exclude device-specific preferences -->
+        <exclude
+            domain="sharedpref"
+            path="device.xml" />
+
+        <!-- Exclude cache directories -->
+        <exclude
+            domain="file"
+            path="cache/" />
+
+        <!-- Exclude no_backup folder -->
+        <exclude
+            domain="file"
+            path="no_backup/" />
+
+        <!-- Exclude external storage -->
+        <exclude
+            domain="external"
+            path="." />
+
+        <!-- Exclude device-protected storage -->
+        <exclude
+            domain="device_file"
+            path="." />
+
+        <exclude
+            domain="device_database"
+            path="." />
+
+        <exclude
+            domain="device_sharedpref"
+            path="." />
+
+    </cloud-backup>
+
+    <!--
+        ========================================================
+          Device-to-Device (D2D) Transfer Rules
+          Applies when the user transfers data directly from
+          one device to another (e.g., during phone setup).
+
+          For a game, we want to transfer the same data as
+          cloud backup — settings and save progress.
+        ========================================================
+    -->
+    <device-transfer>
+
+        <!--
+            ----------------------------------------------------
+              Include Rules
+              Match the cloud backup includes.
+            ----------------------------------------------------
+        -->
+
+        <include
+            domain="sharedpref"
+            path="." />
+
+        <include
+            domain="file"
+            path="." />
+
+        <include
+            domain="database"
+            path="." />
+
+        <!--
+            ----------------------------------------------------
+              Exclude Rules
+              Match the cloud backup excludes.
+            ----------------------------------------------------
+        -->
+
+        <exclude
+            domain="sharedpref"
+            path="device.xml" />
+
+        <exclude
+            domain="file"
+            path="cache/" />
+
+        <exclude
+            domain="file"
+            path="no_backup/" />
+
+        <exclude
+            domain="external"
+            path="." />
+
+        <exclude
+            domain="device_file"
+            path="." />
+
+        <exclude
+            domain="device_database"
+            path="." />
+
+        <exclude
+            domain="device_sharedpref"
+            path="." />
+
+    </device-transfer>
+
+</data-extraction-rules>
