@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Network Security Configuration
+      Since the game is 100% offline, this configuration
+      completely blocks all cleartext (HTTP) traffic and
+      enforces HTTPS-only connections for any future needs.
+
+      Reference: Android Developers — "Network security
+      configuration"
+      https://developer.android.com/privacy-and-security/security-config
+
+      File location: app/src/main/res/xml/network_security_config.xml
+      Referenced from: AndroidManifest.xml →
+          android:networkSecurityConfig="@xml/network_security_config"
+    ============================================================
+-->
+<network-security-config>
+
+    <!--
+        ========================================================
+          Base Configuration
+          Applies to ALL network connections made by the app
+          that are not covered by a domain-specific config.
+
+          For an offline game, we set:
+          - cleartextTrafficPermitted="false":
+              Blocks ALL HTTP (non-encrypted) traffic.
+              This is the default for apps targeting API 28+
+              (Android 9), but declaring it explicitly makes
+              the security posture clear and future-proof.
+              Reference: Android Developers — "Default
+              configuration for apps targeting Android 9
+              (API level 28) and higher"
+          - trust-anchors: system certificates only.
+              No user-installed CAs are trusted. This prevents
+              man-in-the-middle attacks via user-installed
+              certificates.
+        ========================================================
+    -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!--
+        ========================================================
+          Debug Overrides
+          These overrides ONLY apply to debug builds.
+          They are automatically ignored in release builds
+          by the Android platform (not by us).
+
+          Purpose: allow developers to use tools like
+          Charles Proxy or mitmproxy during development
+          without modifying the main config.
+
+          If you don't need this, you can remove this block
+          entirely — it will not affect the game.
+        ========================================================
+    -->
+    <debug-overrides>
+        <trust-anchors>
+            <!-- Trust both system and user-installed CAs in debug -->
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+
+    <!--
+        ========================================================
+          Domain-Specific Rules
+          ========================================================
+          The game makes NO network calls, so no domain-config
+          blocks are needed. If future features require network
+          access (e.g., online leaderboards), add them here.
+
+          Example (commented out — do not uncomment unless needed):
+          <domain-config cleartextTrafficPermitted="false">
+              <domain includeSubdomains="true">api.example.com</domain>
+              <trust-anchors>
+                  <certificates src="system" />
+              </trust-anchors>
+          </domain-config>
+        ========================================================
+    -->
+
+</network-security-config>
