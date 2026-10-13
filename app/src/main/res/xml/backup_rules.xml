@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Auto Backup Rules (Legacy)
+      Defines which app data is included in or excluded from
+      Android's automatic cloud backup (Google Drive backup).
+
+      Reference: Android Developers — "Back up user data with
+      Auto Backup"
+      https://developer.android.com/identity/data/autobackup
+
+      File location: app/src/main/res/xml/backup_rules.xml
+      Referenced from: AndroidManifest.xml →
+          android:fullBackupContent="@xml/backup_rules"
+
+      IMPORTANT: This file is used for devices running
+      Android 11 (API 30) and BELOW. For Android 12+ (API 31+),
+      a separate file (data_extraction_rules.xml) is used.
+      We will create that file in a later step.
+    ============================================================
+-->
+<full-backup-content>
+
+    <!--
+        ========================================================
+          Include Rules
+          By default, Auto Backup includes all of the app's
+          data. We explicitly include only what matters.
+        ========================================================
+    -->
+
+    <!--
+        Include all SharedPreferences files.
+        These store game settings (audio, vibration,
+        joystick side, sensitivity, etc.).
+        Reference: Android Developers — "Include all shared
+        preferences except device.xml"
+    -->
+    <include
+        domain="sharedpref"
+        path="." />
+
+    <!--
+        Include all files in the app's internal files directory.
+        This is where we store save data, progress, and
+        high scores.
+    -->
+    <include
+        domain="file"
+        path="." />
+
+    <!--
+        Include all databases (if we add any in the future).
+        Currently, the game has no databases, but this
+        future-proofs the configuration.
+    -->
+    <include
+        domain="database"
+        path="." />
+
+    <!--
+        ========================================================
+          Exclude Rules
+          Exclude sensitive or device-specific data that
+          should NOT be backed up.
+        ========================================================
+    -->
+
+    <!--
+        Exclude device-specific SharedPreferences.
+        If we ever create a "device.xml" preferences file
+        containing device IDs or hardware info, exclude it.
+        Reference: Android Developers — "Sample backup rules
+        file; uncomment and customize as necessary"
+    -->
+    <exclude
+        domain="sharedpref"
+        path="device.xml" />
+
+    <!--
+        Exclude cache directories.
+        Cached data can be regenerated and should not be
+        backed up — it wastes the user's cloud storage quota.
+    -->
+    <exclude
+        domain="file"
+        path="cache/" />
+
+    <!--
+        Exclude the no_backup directory.
+        Some apps use a "no_backup" folder for temporary
+        files that must never be backed up.
+    -->
+    <exclude
+        domain="file"
+        path="no_backup/" />
+
+    <!--
+        Exclude external files.
+        The game does not use external storage, but this
+        prevents accidental inclusion if that changes.
+    -->
+    <exclude
+        domain="external"
+        path="." />
+
+    <!--
+        Exclude device-protected files.
+        Device-protected storage is only available after
+        the user unlocks the device and is not suitable
+        for cloud backup.
+    -->
+    <exclude
+        domain="device_file"
+        path="." />
+
+    <exclude
+        domain="device_database"
+        path="." />
+
+    <exclude
+        domain="device_sharedpref"
+        path="." />
+
+    <!--
+        ========================================================
+          Conditional Backup Requirements (Android 9+)
+          ========================================================
+          If you want to require client-side encryption before
+          backing up certain data, use the requireFlags
+          attribute. For a game with only settings data,
+          this is not necessary, but included as a reference.
+
+          Example:
+          <include
+              domain="file"
+              path="sensitive/"
+              requireFlags="clientSideEncryption" />
+    -->
+
+    <!--
+        ========================================================
+          Root Path Rules
+          ========================================================
+          The "root" domain represents the app's root
+          directory. We do not back up the root itself
+          because individual subdirectories are already
+          handled above.
+    -->
+
+</full-backup-content>
