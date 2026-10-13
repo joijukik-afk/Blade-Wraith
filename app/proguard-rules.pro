@@ -1,0 +1,2 @@
+-keep class com.bladewraith.** { *; }
+-dontwarn kotlin.**
