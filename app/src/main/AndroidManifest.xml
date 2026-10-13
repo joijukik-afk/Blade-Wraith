@@ -5,6 +5,12 @@
       Declares app capabilities, hardware requirements, and
       the entry Activity. Must be error-free for the app to
       launch on any Android 7.0+ device.
+
+      References:
+      - Android Developers: "App Manifest Overview"
+      - Android Developers: "Hardware acceleration"
+      - Android Developers: "Display cutouts"
+      - Android Developers: "Auto Backup"
     ============================================================
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,39 +19,72 @@
     <!--
         ============================================================
           Hardware Features
-          Declares that the app requires OpenGL ES 2.0.
-          Google Play will filter out devices that don't support it.
-          Reference: Android Developers — "Build an OpenGL ES environment"
+          Declares hardware/software capabilities required by the app.
+          Google Play filters out devices that don't match these.
+          Reference: Android Developers — "uses-feature element"
         ============================================================
+    -->
+
+    <!--
+        OpenGL ES 2.0 is REQUIRED.
+        0x00020000 = version 2.0 encoded as (major << 16 | minor)
+        Without this, the app would install on devices that
+        cannot render the game → crash on launch.
     -->
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
 
     <!--
-        Screen support: the game runs in landscape only.
-        No portrait support is declared.
+        Landscape screen orientation is REQUIRED.
+        The game is designed for landscape only.
     -->
     <uses-feature
         android:name="android.hardware.screen.landscape"
         android:required="true" />
 
     <!--
-        Touchscreen: required for the game's virtual joystick and buttons.
-        Multitouch is not declared as required (most devices have it).
+        Touchscreen is REQUIRED.
+        The virtual joystick and action buttons need touch input.
     -->
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="true" />
 
     <!--
+        Multitouch is strongly recommended but not required.
+        Some very old devices lack it; those users can still play
+        with single-touch (though experience will be limited).
+    -->
+    <uses-feature
+        android:name="android.hardware.touchscreen.multitouch"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen.multitouch.distinct"
+        android:required="false" />
+
+    <!--
         ============================================================
           Permissions
           The game is fully offline; only vibration is needed
-          for haptic feedback on hits and impacts.
+          for haptic feedback (hit impacts, boss slams).
         ============================================================
     -->
     <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!--
+        Explicitly declare that the app does NOT use network.
+        This signals to Google Play and reviewers that the app
+        is offline-only.
+    -->
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        tools:node="remove" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        tools:node="remove" />
 
     <!--
         ============================================================
@@ -62,27 +101,57 @@
         android:extractNativeLibs="false"
         android:usesCleartextTraffic="false"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowClearUserData="false"
+        android:killAfterRestore="false"
+        android:requestLegacyExternalStorage="false"
+        android:hasFragileUserData="false"
         tools:targetApi="34">
 
         <!--
             ========================================================
               Main Activity
               The single entry point of the game.
-              Configuration:
+
+              Configuration rationale:
               - screenOrientation="sensorLandscape":
-                  Forces landscape mode but respects the device's
-                  natural landscape direction (normal or reverse).
-                  Reference: Android game development — "Support
-                  all screens"
-              - configChanges: tells Android that the Activity
-                  handles these changes itself, so it will NOT
-                  be destroyed and recreated. This is critical
-                  for OpenGL apps to avoid losing the GL context.
-                  Reference: NVIDIA — "Bringing High-End 3D Games
-                  to Android"
-              - launchMode="singleTask": ensures only one instance
-                  exists; returning to the app resumes the same
-                  session instead of creating a new one.
+                  Locks the Activity to landscape mode while
+                  allowing both normal and reverse landscape.
+                  Reference: Android Developers — "Activity
+                  screenOrientation attribute"
+
+              - launchMode="singleTask":
+                  Ensures only one instance of this Activity
+                  exists in the task. Returning to the app
+                  resumes the existing session rather than
+                  creating a new one. Critical for games to
+                  preserve GL context and game state.
+
+              - configChanges (CRITICAL for OpenGL):
+                  Tells Android the Activity handles these
+                  configuration changes itself, preventing
+                  destruction and recreation of the Activity
+                  (and therefore the OpenGL surface).
+                  Reference: NVIDIA — "Bringing High-End 3D
+                  Games to Android"
+                  https://developer.download.nvidia.com/...
+
+                  DO NOT REMOVE ANY OF THESE VALUES!
+                  Removing "orientation" or "screenSize" will
+                  cause the GL context to be lost on rotation,
+                  leading to crashes or black screens.
+
+              - resizeableActivity="false":
+                  Prevents the game from entering split-screen
+                  or freeform multi-window mode, which would
+                  break the layout.
+
+              - exported="true":
+                  Required for any Activity with an
+                  intent-filter on Android 12+ (API 31+).
             ========================================================
         -->
         <activity
@@ -90,20 +159,34 @@
             android:exported="true"
             android:screenOrientation="sensorLandscape"
             android:launchMode="singleTask"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|smallestScreenSize|uiMode|density|fontScale"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|smallestScreenSize|uiMode|density|fontScale|navigation|touchscreen"
             android:theme="@style/Theme.BladeWraith"
             android:hardwareAccelerated="true"
             android:resizeableActivity="false"
-            tools:ignore="LockedOrientationActivity">
+            android:excludeFromRecents="false"
+            android:stateNotNeeded="true"
+            tools:ignore="LockedOrientationActivity,DiscouragedApi">
 
+            <!--
+                ====================================================
+                  Launcher Intent Filter
+                  Marks this Activity as the app's entry point.
+                ====================================================
+            -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <!--
-                Declare that this activity supports game controllers
-                (optional, for future gamepad support).
+                ====================================================
+                  Maximum Aspect Ratio
+                  Tells the system this Activity can handle
+                  aspect ratios up to 2.4 (for ultra-wide and
+                  foldable devices).
+                  Reference: Android Developers — "Support
+                  different display sizes"
+                ====================================================
             -->
             <meta-data
                 android:name="android.max_aspect"
@@ -113,43 +196,61 @@
 
         <!--
             ========================================================
-              Meta-Data
-              Application-level metadata for compatibility.
+              Application-Level Metadata
+              These apply to the entire app.
             ========================================================
         -->
-        <meta-data
-            android:name="android.app.lib_name"
-            android:value="" />
 
+        <!--
+            Maximum supported aspect ratio for the entire app.
+            Set to 2.4 to support modern foldables and ultra-wide
+            displays without letterboxing.
+        -->
         <meta-data
             android:name="android.max_aspect"
             android:value="2.4" />
 
         <!--
             ========================================================
-              Disable Analytics / Tracking
-              The game is fully offline; no analytics or crash
-              reporting libraries are included.
+              Auto Backup Rules
+              Android's backup system reads these to determine
+              what data to include/exclude.
+              - backup_rules.xml: for Android 11 and below
+              - data_extraction_rules.xml: for Android 12+
+            Both are declared in the <application> tag above.
             ========================================================
         -->
 
         <!--
             ========================================================
-              Hardware Acceleration
-              Ensures the entire app uses hardware-accelerated
-              rendering. This is essential for OpenGL ES.
+              Activity Aliases (Future-Proofing)
+              Uncomment when adding alternate launcher icons
+              or deep-links.
             ========================================================
         -->
 
         <!--
             ========================================================
-              Backup Rules (Android 12+)
-              Excludes sensitive data from cloud backups.
+              Services & Receivers
+              The game has none currently. Add them here as
+              needed in future versions.
             ========================================================
         -->
-        <meta-data
-            android:name="android.content.backup_rules"
-            android:resource="@xml/backup_rules" />
+
+        <!--
+            ========================================================
+              Content Providers
+              None required for an offline game.
+            ========================================================
+        -->
+
+        <!--
+            ========================================================
+              Disable Analytics & Tracking
+              The game is fully offline; no analytics, crash
+              reporters, or tracking libraries are included.
+              ========================================================
+        -->
 
     </application>
 
