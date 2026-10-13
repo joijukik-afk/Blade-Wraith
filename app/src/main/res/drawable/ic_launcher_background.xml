@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Launcher Icon Background
+      Radial gradient from deep purple to near-black.
+      Used as the background layer of the adaptive icon.
+    ============================================================
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!--
+        Full-canvas radial gradient.
+        Center: slightly above middle for a "moonlight from above" feel.
+        Start color: rich purple
+        Center color: dark violet
+        End color: near-black
+    -->
+    <path
+        android:pathData="M0,0 L108,0 L108,108 L0,108 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="54"
+                android:centerY="48"
+                android:gradientRadius="78"
+                android:startColor="#5A2A78"
+                android:centerColor="#1F0A30"
+                android:endColor="#05030A" />
+        </aapt:attr>
+    </path>
+
+    <!--
+        Subtle inner glow ring — gives the icon depth.
+        A slightly lighter ring around the sword area.
+    -->
+    <path
+        android:pathData="M54,54 m-44,0 a44,44 0 1,0 88,0 a44,44 0 1,0 -88,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="54"
+                android:centerY="54"
+                android:gradientRadius="44"
+                android:startColor="#00000000"
+                android:centerColor="#00000000"
+                android:endColor="#40406090" />
+        </aapt:attr>
+    </path>
+
+    <!--
+        Faint horizontal "ground fog" line at lower third.
+        Adds atmosphere and grounds the sword.
+    -->
+    <path
+        android:pathData="M0,78 L108,78 L108,84 L0,84 Z"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="0" android:startY="0"
+                android:endX="108" android:endY="0"
+                android:startColor="#008060FF"
+                android:centerColor="#40402060"
+                android:endColor="#008060FF" />
+        </aapt:attr>
+    </path>
+
+</vector>
