@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ============================================================
+      Blade Wraith — Legacy Launcher Icon (API 24-25)
+      Used on Android 7.0-7.1 (Nougat) which predates adaptive
+      icons. Combines the background and foreground into a
+      single drawable using a layer-list.
+    ============================================================
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background layer -->
+    <item android:drawable="@drawable/ic_launcher_background" />
+
+    <!-- Foreground layer (sword) -->
+    <item android:drawable="@drawable/ic_launcher_foreground" />
+
+</layer-list>
